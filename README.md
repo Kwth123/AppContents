@@ -1,51 +1,39 @@
-AppContents is a basic python program which shows the steps and underlying logic of whast used in our final application
+### AppContents
 
-Prerequisites
+AppContents is a basic Python program that demonstrates the steps and underlying logic used in our final application.
 
-- Python (https://www.python.org/downloads/)
-- pip (should be included with the Python download but if not please contact me for help)
+#### Setup
 
-Note: The databaseCreationHobbies.py file is used to generate the hobbies database and doesn't need to be run.
+1. **Clone the Repository:**
+   ```sh
+   git clone https://github.com/Kwth123/AppContents
+   cd AppContents
+   ```
 
-Setup
+2. **Activate the Provided Virtual Environment:**
+   - On Windows: `venv\Scripts\activate`
+   - On macOS/Linux: `source venv/bin/activate`
 
-1. Clone the Repository
+3. **Set Up the Google Maps API Key:**
+   - Obtain an API key from the [Google Maps website](https://developers.google.com/maps/documentation/javascript/get-api-key).
+   - Replace `API_KEY = "KEY_HERE"` with your actual API KEY.
 
-    git clone https://github.com/your-username/your-repository.git
-    cd AppContents
+#### Running the Project
+To run the project, execute:
+```sh
+python main.py
+```
 
-2. Create and Activate a Virtual Environment
+#### Additional Notes
+- Avoid hardcoding the Google Maps API key in production. If you do its no issue, commit a new change with the key replaced with "KEY_HERE" and delete the key from google maps website
 
-    On Windows:
-        python -m venv venv
-        venv\Scripts\activate
+---
 
-    On macOS/Linux:
-        python3 -m venv venv
-        source venv/bin/activate
-
-3. Install the Dependencies
-
-    pip install -r requirements.txt
-
-4. Set Up the Google Maps API Key
-
-    - Go to the Google Maps website and get an API key. Google typically provides new accounts with free credit, so you shouldn't run out of it anytime soon. https://developers.google.com/maps/documentation/javascript/get-api-key
-    - Replace API_KEY = "ENTER_API_KEY" with your actual API key in the configuration file.
-
-Running the Project
-
-Once you have set up the virtual environment and installed the dependencies, you can run the project with:
-
-    python main.py
-
-Additional Notes
-
-hard coding the google maps API shouldnt be done in production, 
-
-CODE USED TO CREATE requirements.txt:
-Install python 
+#### CODE USED TO CREATE `requirements.txt`:
+```sh
+Install python
 python -m venv venv
 venv\Scripts\activate
 pip install googlemaps
 pip freeze > requirements.txt
+```
