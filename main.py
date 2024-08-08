@@ -3,7 +3,7 @@ import googlemaps
 from datetime import datetime, timedelta
 
 # Directly assign the API key (for development only)
-API_KEY = "AIzaSyBosbel5fjZUkMb8tltr3B5nlgNpI5FeY8"
+API_KEY = "KEY_HERE"
 
 if not API_KEY:
     raise ValueError("API key not found. Ensure the environment variable is set.")
