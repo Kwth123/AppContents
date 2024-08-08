@@ -3,7 +3,7 @@ import googlemaps
 from datetime import datetime, timedelta
 
 # Directly assign the API key (for development only)
-API_KEY = "ENTER_API_KEY"
+API_KEY = "AIzaSyBosbel5fjZUkMb8tltr3B5nlgNpI5FeY8"
 
 if not API_KEY:
     raise ValueError("API key not found. Ensure the environment variable is set.")
@@ -39,19 +39,17 @@ def get_location_from_google_maps(address):
     return None
 
 def get_user_location():
-    for _ in range(3):
+    while True:
         address = input("Please enter the full address of your stay: ").strip()
         location = get_location_from_google_maps(address)
         if location:
             return location
         print(f"Invalid address entered: {address}")
         print("Please enter a valid address in South Korea.")
-    print("Max retries reached. Exiting.")
-    return None
 
 def prompt_for_trip_details(user):
     def get_valid_date(prompt):
-        for _ in range(3):
+        while True:
             date_str = input(prompt).strip()
             try:
                 date_obj = datetime.strptime(date_str, "%d/%m/%y")
@@ -63,23 +61,14 @@ def prompt_for_trip_details(user):
                     return date_str, date_obj
             except ValueError:
                 print("Invalid date format. Please enter the date in dd/mm/yy format.")
-        print("Max retries reached. Exiting.")
-        return None, None
 
     start_date_str, start_date = get_valid_date("Enter the start date of your trip (dd/mm/yy): ")
-    if not start_date:
-        print("Our algorithm works best on recently planned trips. Please retry when you are closer to the date of your trip.")
-        return
 
     end_date_str, end_date = get_valid_date("Enter the end date of your trip (dd/mm/yy): ")
-    if not end_date:
-        return
 
     while end_date < start_date:
         print("The end date cannot be before the start date. Please enter a valid end date.")
         end_date_str, end_date = get_valid_date("Enter the end date of your trip (dd/mm/yy): ")
-        if not end_date:
-            return
 
     trip_duration = end_date - start_date
     if trip_duration > timedelta(weeks=1):
@@ -88,18 +77,13 @@ def prompt_for_trip_details(user):
 
     if not user.current_location:
         user.current_location = get_user_location()
-        if not user.current_location:
-            return
 
-    for _ in range(3):
+    while True:
         try:
             user.budget = int(input("What's your budget for activities for your stay? (KRW): ").strip())
             break
         except ValueError:
             print("Please enter a valid integer for the budget.")
-    else:
-        print("Max retries reached. Exiting.")
-        return
 
 def fetch_hobbies_from_db(hobby_list):
     conn = sqlite3.connect('hobbies.db')
@@ -176,20 +160,20 @@ def generate_prompt(user):
 
     hobbies_str = "; ".join([f"{hobby}: {details}" for hobby, details in user.hobbies.items()])
     prompt = (
-        f"User Information (from account creation):\n"
+        f"User Information:\n"
         f"- Home Location: {user.location}\n"
         f"- Hobbies: {hobbies_str}\n"
         f"- Date of Birth: {user.date_of_birth}\n"
         f"- Dietary Restrictions: {', '.join(user.dietary_restrictions) if user.dietary_restrictions else 'None'}\n"
         f"- Disabilities: {', '.join(user.disabilities) if user.disabilities else 'None'}\n"
         f"\n"
-        f"Travel Information (from trip planning):\n"
+        f"Travel Information:\n"
         f"- Current Location: {user.current_location}, South Korea\n"
         f"- Travel Dates: {user.travel_dates[0]} to {user.travel_dates[1]}\n"
         f"- Budget: {user.budget} KRW\n"
         f"\n"
         f"Request:\n"
-        f"Recommend a minimum of 10 places for the user in {user.current_location} to visit. "
+        f"Recommend a minimum of 10 places for the user near {user.current_location} to visit. "
         f"Consider the user's hobbies and recent headlines or trends from the internet related to the area. "
         f"{' '.join(clause)}"
     )
@@ -218,7 +202,6 @@ if validate_dietary_restrictions_and_disabilities(user_data.dietary_restrictions
         print("User hobbies validation failed.")
 else:
     print("Validation of dietary restrictions or disabilities failed.")
-
 
 
 
