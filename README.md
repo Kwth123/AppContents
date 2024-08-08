@@ -1,4 +1,4 @@
-AppContents is a basic pyhton program which shows the steps and underlying logic of whast used in our final application
+AppContents is a basic python program which shows the steps and underlying logic of whast used in our final application
 
 Prerequisites
 
