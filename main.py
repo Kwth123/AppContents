@@ -3,7 +3,7 @@ import googlemaps
 from datetime import datetime, timedelta
 
 # Directly assign the API key (for development only)
-API_KEY = "KEY_HERE"
+API_KEY = "ENTERKEYHERE"
 
 if not API_KEY:
     raise ValueError("API key not found. Ensure the environment variable is set.")
@@ -15,9 +15,8 @@ else:
 gmaps = googlemaps.Client(key=API_KEY)
 
 class User:
-    def __init__(self, location, hobbies, date_of_birth, dietary_restrictions=None,
+    def __init__(self, hobbies, date_of_birth, dietary_restrictions=None,
                  disabilities=None, travel_dates=None, budget=None, current_location=None):
-        self.location = location
         self.hobbies = hobbies
         self.date_of_birth = date_of_birth
         self.dietary_restrictions = dietary_restrictions
@@ -161,9 +160,7 @@ def generate_prompt(user):
     hobbies_str = "; ".join([f"{hobby}: {details}" for hobby, details in user.hobbies.items()])
     prompt = (
         f"User Information:\n"
-        f"- Home Location: {user.location}\n"
         f"- Hobbies: {hobbies_str}\n"
-        f"- Date of Birth: {user.date_of_birth}\n"
         f"- Dietary Restrictions: {', '.join(user.dietary_restrictions) if user.dietary_restrictions else 'None'}\n"
         f"- Disabilities: {', '.join(user.disabilities) if user.disabilities else 'None'}\n"
         f"\n"
@@ -174,14 +171,13 @@ def generate_prompt(user):
         f"\n"
         f"Request:\n"
         f"Recommend a minimum of 10 places for the user near {user.current_location} to visit. "
-        f"Consider the user's hobbies and recent headlines or trends from the internet related to the area. "
+        f"Consider the user's hobbies and recent headlines or trends from the internet related to the area, ensure recommendations are age-appropriate to the users age. "
         f"{' '.join(clause)}"
     )
 
     return prompt
 
 user_data = User(
-    location="Seoul, South Korea",
     hobbies=["Swimming", "Running", "Art", "History", "Gaming"],
     date_of_birth="31/07/24",
     dietary_restrictions=["Halal", "Nut allergy"],
@@ -206,25 +202,3 @@ else:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-#have to been to korea before, can you tell us where and when you went so we dont recomend you repeated places
-#track if the user has completed these journeys and wheere they have been to, if they have been to different palces then
-
-#the app recomends a bunch of places for the user to go, the app also shows all the other arias the user can visit,
-#the User selecs the places they want to visit during their stay, its added to a list
-#locations are sent to a second llm which takes this input and splits them into daily jrneys itinerarys for each day the user is traveling so places are grouped together and stuff
-
-
-#add simlar places the user likes to visit based on their home location
